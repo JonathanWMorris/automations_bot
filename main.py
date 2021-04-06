@@ -36,6 +36,11 @@ async def on_message(message):
     elif message.content.startswith("-!help"):
         await message.channel.send(messages.help_message)
 
+    elif message.content.startswith("-!verify"):
+        name = message.content.replace("-!verify ", "")
+        response = commands.get_verification(name)
+        await message.channel.send(response)
+
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 

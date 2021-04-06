@@ -1,11 +1,13 @@
 import requests
 import base64
 import random
+import json
 
 cat_images_url = "https://api.thecatapi.com/v1/images/search"
 dog_facts_url = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
 trivia_url = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=boolean&encode=base64"
 animals = ["cat", "dog", "wolf", "otter", "panda"]
+
 
 def get_json_data(url):
     result = requests.get(url)
@@ -52,3 +54,31 @@ def get_fact():
 def get_animal_command():
     command = f"a!{random.choice(animals)}"
     return command
+
+
+def get_verification(name):
+    result = is_senior(name)
+    response = "There was an error"
+
+    if result:
+        response = f"{name} is a senior."
+    elif not result:
+        response = f"{name} is not a senior"
+
+    return response
+
+
+def is_senior(name):
+    with open("Leland Class of 2021.json") as file:
+        user_found = False
+        name = name.lower()
+        student_list = json.loads(file.read())
+
+        for student in student_list:
+            student_name = f"{student['First Name']} {student['Last Name']}"
+            student_name = student_name.lower()
+
+            if student_name == name:
+                user_found = True
+
+        return user_found
