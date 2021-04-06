@@ -65,6 +65,9 @@ async def on_message(message):
 
         await message.channel.send(list_of_names)
 
+    elif message.content.__contains__("827972357368053830"):
+        await message.channel.send(messages.mention_message)
+
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
