@@ -82,3 +82,15 @@ def is_senior(name):
                 user_found = True
 
         return user_found
+
+
+def get_batch_verification(list_of_names):
+    responses = []
+    names = list_of_names
+
+    for name in names:
+        response = get_verification(name)
+        if response.__contains__("not"):
+            responses.append(response)
+
+    return responses

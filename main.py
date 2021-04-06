@@ -2,7 +2,10 @@ import discord
 import commands
 import messages
 
-client = discord.Client()
+intents = discord.Intents.default()
+intents.members = True
+
+client = discord.Client(intents=intents)
 
 
 @client.event
@@ -36,10 +39,31 @@ async def on_message(message):
     elif message.content.startswith("-!help"):
         await message.channel.send(messages.help_message)
 
+    elif message.content.startswith("-!verifyAll"):
+        names = message.channel.members
+        list_of_names = []
+
+        for name in names:
+            list_of_names.append(name.display_name)
+
+        responses = commands.get_batch_verification(list_of_names)
+
+        for response in responses:
+            await message.channel.send(response)
+
     elif message.content.startswith("-!verify"):
         name = message.content.replace("-!verify ", "")
         response = commands.get_verification(name)
         await message.channel.send(response)
+
+    elif message.content.startswith("-!names"):
+        names = message.channel.members
+        list_of_names = []
+
+        for name in names:
+            list_of_names.append(str(name.display_name))
+
+        await message.channel.send(list_of_names)
 
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
