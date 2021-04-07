@@ -96,6 +96,7 @@ async def on_message(message):
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
+
             if attachment.url.__contains__(".mov") \
                     or attachment.url.__contains__(".mp4") or attachment.url.__contains__(".avi"):
 
@@ -107,5 +108,22 @@ async def on_message(message):
 
     if message.content.__contains__("827972357368053830"):
         await message.channel.send(messages.mention_message)
+
+    if message.embeds:
+        for embed in message.embeds:
+            if embed.image:
+                is_NSFW = commands.check_nsfw_image(embed.image.url)
+
+                if is_NSFW:
+                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+                    await message.delete()
+
+            if embed.video:
+                is_NSFW = commands.check_nsfw_video(embed.video.url)
+
+                if is_NSFW:
+                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+                    await message.delete()
+
 
 client.run('ODI3OTcyMzU3MzY4MDUzODMw.YGizWA.08HUC_slOmNj65veuKenyt4oA40')
