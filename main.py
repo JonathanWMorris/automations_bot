@@ -65,21 +65,47 @@ async def on_message(message):
 
         await message.channel.send(list_of_names)
 
-    elif message.content.__contains__("827972357368053830"):
-        await message.channel.send(messages.mention_message)
-
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
-    elif message.content.__contains__("gif") \
-            or message.content.__contains__("jpg") or message.content.__contains__("png"):
-        file_path = "nsfw_image.jpg"
-        commands.get_image(message.content, file_path)
-        is_NSFW = commands.check_nsfw_image(file_path)
+    elif message.content.__contains__(".gif") \
+            or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
+
+        is_NSFW = commands.check_nsfw_image(message.content)
 
         if is_NSFW:
-            await message.channel.send(f"@Admin @Moderator , {message.author.display_name} sent an inappropriate image.")
+            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
             await message.delete()
 
+    elif message.content.__contains__(".mov") \
+            or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
+
+        is_NSFW = commands.check_nsfw_video(message.content)
+
+        if is_NSFW:
+            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+            await message.delete()
+
+    if message.attachments:
+        for attachment in message.attachments:
+            if attachment.url.__contains__(".jpg") \
+                    or attachment.url.__contains__(".png") or attachment.url.__contains__(".gif"):
+
+                is_NSFW = commands.check_nsfw_image(attachment.url)
+
+                if is_NSFW:
+                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+                    await message.delete()
+            if attachment.url.__contains__(".mov") \
+                    or attachment.url.__contains__(".mp4") or attachment.url.__contains__(".avi"):
+
+                is_NSFW = commands.check_nsfw_video(attachment.url)
+
+                if is_NSFW:
+                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+                    await message.delete()
+
+    if message.content.__contains__("827972357368053830"):
+        await message.channel.send(messages.mention_message)
 
 client.run('ODI3OTcyMzU3MzY4MDUzODMw.YGizWA.08HUC_slOmNj65veuKenyt4oA40')

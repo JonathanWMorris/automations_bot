@@ -4,6 +4,7 @@ import random
 import json
 from nudenet import NudeClassifier
 import os
+from datetime import datetime
 
 nsfw_classifier = NudeClassifier()
 
@@ -100,23 +101,61 @@ def get_batch_verification(list_of_names):
     return responses
 
 
-def check_nsfw_image(image_path):
-    result = nsfw_classifier.classify(image_path)
+def check_nsfw_image(url):
+    file_path = "nsfw_video.gif"
+
+    get_content(url, file_path)
+
+    result = nsfw_classifier.classify(file_path)
     is_nsfw = False
-    image_results = result[image_path]
+    image_results = result[file_path]
     unsafe_percent = image_results["unsafe"] * 100
 
-    print(f"The image scanned is {unsafe_percent}% unsafe.")
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
 
-    if unsafe_percent > 50:
+    print(f"The image scanned is {unsafe_percent}% unsafe. Time: {current_time}")
+
+    if unsafe_percent > 65:
         is_nsfw = True
 
-    os.remove(image_path)
+    os.remove(file_path)
 
     return is_nsfw
 
 
-def get_image(url, file_name):
+def check_nsfw_video(url):
+
+    file_path = "nsfw_video.mp4"
+
+    get_content(url, file_path)
+
+    result = nsfw_classifier.classify_video(file_path)
+    is_nsfw = False
+    video_result = result["preds"]
+
+    total_score = 0
+
+    for frame in video_result:
+        scores = video_result[frame]
+        total_score += scores["unsafe"]
+
+    average_score = total_score / len(video_result)
+
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+
+    print(f"The video scanned is {average_score}% unsafe. Time: {current_time}")
+
+    if average_score > 65:
+        is_nsfw = True
+
+    os.remove(file_path)
+
+    return is_nsfw
+
+
+def get_content(url, file_path):
     response = requests.get(url)
-    with open(file_name, "wb") as file:
+    with open(file_path, "wb") as file:
         file.write(response.content)

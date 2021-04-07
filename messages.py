@@ -10,3 +10,7 @@ welcome_message = "Hello! I'm a bot, did you know that i can do botty things tha
 
 mention_message = "Did someone say my name? Strange... I hope they know they only need to type -!help for the help " \
                   "message. \n They probably aren't good with technology..."
+
+
+def nsfw_content_message(author):
+    return f"@822960923475968051 @822961195031199764 , {author} sent an inappropriate image."
