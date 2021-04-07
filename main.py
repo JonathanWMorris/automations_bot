@@ -71,6 +71,24 @@ async def on_message(message):
         yoda_sentence = commands.get_yoda_speak(sentence)
         await message.channel.send(yoda_sentence)
 
+    elif message.content.__contains__(".gif") \
+            or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
+
+        is_NSFW = commands.check_nsfw_image(message.content)
+
+        if is_NSFW:
+            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+            await message.delete()
+
+    elif message.content.__contains__(".mov") \
+            or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
+
+        is_NSFW = commands.check_nsfw_video(message.content)
+
+        if is_NSFW:
+            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+            await message.delete()
+
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 

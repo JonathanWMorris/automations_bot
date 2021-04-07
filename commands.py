@@ -117,7 +117,7 @@ def check_nsfw_image(url):
 
     print(f"The image scanned is {unsafe_percent}% unsafe. Time: {current_time}")
 
-    if unsafe_percent > 65:
+    if unsafe_percent > 30:
         is_nsfw = True
 
     os.remove(file_path)
