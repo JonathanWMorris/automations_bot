@@ -1,6 +1,7 @@
 import discord
 import commands
 import messages
+import constants
 
 intents = discord.Intents.default()
 intents.members = True
@@ -126,4 +127,4 @@ async def on_message(message):
                     await message.delete()
 
 
-client.run('ODI3OTcyMzU3MzY4MDUzODMw.YGizWA.08HUC_slOmNj65veuKenyt4oA40')
+client.run(constants.discord_token)
