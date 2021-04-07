@@ -69,24 +69,6 @@ async def on_message(message):
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
-    elif message.content.__contains__(".gif") \
-            or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
-
-        is_NSFW = commands.check_nsfw_image(message.content)
-
-        if is_NSFW:
-            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-            await message.delete()
-
-    elif message.content.__contains__(".mov") \
-            or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
-
-        is_NSFW = commands.check_nsfw_video(message.content)
-
-        if is_NSFW:
-            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-            await message.delete()
-
     if message.attachments:
         for attachment in message.attachments:
             if attachment.url.__contains__(".jpg") \
@@ -125,6 +107,5 @@ async def on_message(message):
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
-
 
 client.run(constants.discord_token)
