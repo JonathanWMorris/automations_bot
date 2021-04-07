@@ -7,11 +7,12 @@ import os
 from datetime import datetime
 
 nsfw_classifier = NudeClassifier()
-
-cat_images_url = "https://api.thecatapi.com/v1/images/search"
-dog_facts_url = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
-trivia_url = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=boolean&encode=base64"
 animals = ["cat", "dog", "wolf", "otter", "panda"]
+
+cat_images_api = "https://api.thecatapi.com/v1/images/search"
+dog_facts_api = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
+trivia_api = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=boolean&encode=base64"
+yoda_api = "http://yoda-api.appspot.com/api/v1/yodish?text="
 
 
 def get_json_data(url):
@@ -21,8 +22,8 @@ def get_json_data(url):
 
 
 def get_cat_image_url():
-    json = get_json_data(cat_images_url)
-    image_object = json[0]
+    json_object = get_json_data(cat_images_api)
+    image_object = json_object[0]
     image_url = image_object["url"]
     return image_url
 
@@ -36,7 +37,7 @@ def decode_base64(string):
 def get_fact():
     fact = ""
 
-    trivia_object = get_json_data(trivia_url)
+    trivia_object = get_json_data(trivia_api)
     results_object = trivia_object["results"]
     first_result_object = results_object[0]
 
@@ -125,7 +126,6 @@ def check_nsfw_image(url):
 
 
 def check_nsfw_video(url):
-
     file_path = "nsfw_video.mp4"
 
     get_content(url, file_path)
@@ -159,3 +159,10 @@ def get_content(url, file_path):
     response = requests.get(url)
     with open(file_path, "wb") as file:
         file.write(response.content)
+
+
+def get_yoda_speak(sentence):
+    url = yoda_api + sentence
+    result = get_json_data(url)
+    text = result["yodish"]
+    return text

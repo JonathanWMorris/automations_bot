@@ -66,6 +66,11 @@ async def on_message(message):
 
         await message.channel.send(list_of_names)
 
+    elif message.content.startswith("-!yoda"):
+        sentence = message.content.replace("-!yoda ", "")
+        yoda_sentence = commands.get_yoda_speak(sentence)
+        await message.channel.send(yoda_sentence)
+
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
