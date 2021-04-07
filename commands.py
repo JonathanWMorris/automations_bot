@@ -2,6 +2,10 @@ import requests
 import base64
 import random
 import json
+from nudenet import NudeClassifier
+import os
+
+nsfw_classifier = NudeClassifier()
 
 cat_images_url = "https://api.thecatapi.com/v1/images/search"
 dog_facts_url = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
@@ -94,3 +98,25 @@ def get_batch_verification(list_of_names):
             responses.append(response)
 
     return responses
+
+
+def check_nsfw_image(image_path):
+    result = nsfw_classifier.classify(image_path)
+    is_nsfw = False
+    image_results = result[image_path]
+    unsafe_percent = image_results["unsafe"] * 100
+
+    print(f"The image scanned is {unsafe_percent}% unsafe.")
+
+    if unsafe_percent > 50:
+        is_nsfw = True
+
+    os.remove(image_path)
+
+    return is_nsfw
+
+
+def get_image(url, file_name):
+    response = requests.get(url)
+    with open(file_name, "wb") as file:
+        file.write(response.content)

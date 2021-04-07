@@ -71,5 +71,15 @@ async def on_message(message):
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
+    elif message.content.__contains__("gif") \
+            or message.content.__contains__("jpg") or message.content.__contains__("png"):
+        file_path = "nsfw_image.jpg"
+        commands.get_image(message.content, file_path)
+        is_NSFW = commands.check_nsfw_image(file_path)
+
+        if is_NSFW:
+            await message.channel.send(f"@Admin @Moderator , {message.author.display_name} sent an inappropriate image.")
+            await message.delete()
+
 
 client.run('ODI3OTcyMzU3MzY4MDUzODMw.YGizWA.08HUC_slOmNj65veuKenyt4oA40')
