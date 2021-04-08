@@ -13,6 +13,7 @@ cat_images_api = "https://api.thecatapi.com/v1/images/search"
 dog_facts_api = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
 trivia_api = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=boolean&encode=base64"
 yoda_api = "http://yoda-api.appspot.com/api/v1/yodish?text="
+joke_api = "https://official-joke-api.appspot.com/random_joke"
 
 
 def get_json_data(url):
@@ -30,7 +31,7 @@ def get_cat_image_url():
 
 def decode_base64(string):
     new_string = base64.b64decode(string)
-    new_string = new_string.decode("urf-8")
+    new_string = new_string.decode("utf-8")
     return new_string
 
 
@@ -166,3 +167,15 @@ def get_yoda_speak(sentence):
     result = get_json_data(url)
     text = result["yodish"]
     return text
+
+
+class Joke:
+    def __init__(self, setup, punchline):
+        self.punchline = punchline
+        self.setup = setup
+
+
+def get_joke():
+    joke_json = get_json_data(joke_api)
+    joke = Joke(joke_json["setup"], joke_json["punchline"])
+    return joke

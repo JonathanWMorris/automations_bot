@@ -2,6 +2,7 @@ import discord
 import commands
 import messages
 import constants
+import time
 
 intents = discord.Intents.default()
 intents.members = True
@@ -71,7 +72,17 @@ async def on_message(message):
         yoda_sentence = commands.get_yoda_speak(sentence)
         await message.channel.send(yoda_sentence)
 
-    elif message.content.__contains__(".gif") \
+    elif message.content.startswith("-!joke"):
+        joke = commands.get_joke()
+        await message.channel.send(joke.setup)
+        time.sleep(2)
+        await message.channel.send(joke.punchline)
+
+    elif message.content.startswith("-!"):
+        await message.channel.send(messages.response_text)
+
+    # All these are checking for NSFW content
+    if message.content.__contains__(".gif") \
             or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
 
         is_NSFW = commands.check_nsfw_image(message.content)
@@ -80,7 +91,7 @@ async def on_message(message):
             await message.channel.send(messages.nsfw_content_message(message.author.display_name))
             await message.delete()
 
-    elif message.content.__contains__(".mov") \
+    if message.content.__contains__(".mov") \
             or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
 
         is_NSFW = commands.check_nsfw_video(message.content)
@@ -88,9 +99,6 @@ async def on_message(message):
         if is_NSFW:
             await message.channel.send(messages.nsfw_content_message(message.author.display_name))
             await message.delete()
-
-    elif message.content.startswith("-!"):
-        await message.channel.send(messages.response_text)
 
     if message.attachments:
         for attachment in message.attachments:
@@ -130,5 +138,6 @@ async def on_message(message):
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
+
 
 client.run(constants.discord_token)
