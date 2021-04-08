@@ -139,5 +139,4 @@ async def on_message(message):
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
 
-
 client.run(constants.discord_token)

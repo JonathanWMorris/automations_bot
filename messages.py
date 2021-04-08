@@ -13,4 +13,4 @@ mention_message = "Did someone say my name? Strange... I hope they know they onl
 
 
 def nsfw_content_message(author):
-    return f"@822960923475968051 @822961195031199764 , {author} sent an inappropriate image."
+    return f"<@!822960923475968051> <@!822961195031199764> , {author} sent an inappropriate image."
