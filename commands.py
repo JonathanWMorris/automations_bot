@@ -5,9 +5,11 @@ import json
 from nudenet import NudeClassifier
 import os
 from datetime import datetime
+from termcolor import colored
 
 nsfw_classifier = NudeClassifier()
 animals = ["cat", "dog", "wolf", "otter", "panda"]
+muted_people = []
 
 cat_images_api = "https://api.thecatapi.com/v1/images/search"
 dog_facts_api = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?number=1"
@@ -103,7 +105,7 @@ def get_batch_verification(list_of_names):
     return responses
 
 
-def check_nsfw_image(url):
+def check_nsfw_image(url, channel_name):
     file_path = "nsfw_video.gif"
 
     get_content(url, file_path)
@@ -116,17 +118,24 @@ def check_nsfw_image(url):
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
-    print(f"The image scanned is {unsafe_percent}% unsafe. Time: {current_time}")
+    num = unsafe_percent
+    formatted_num = '{0:.3g}'.format(num)
+
+    print_message = f"The image scanned in {channel_name} channel is {formatted_num}% unsafe. Time: {current_time}"
 
     if unsafe_percent > 30:
+        print(colored(print_message, 'red'))
         is_nsfw = True
+    else:
+        print(print_message)
+        is_nsfw = False
 
     os.remove(file_path)
 
     return is_nsfw
 
 
-def check_nsfw_video(url):
+def check_nsfw_video(url, channel_name):
     file_path = "nsfw_video.mp4"
 
     get_content(url, file_path)
@@ -143,13 +152,20 @@ def check_nsfw_video(url):
 
     average_score = total_score / len(video_result)
 
+    num = average_score
+    formatted_num = '{0:.3g}'.format(num)
+
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
-    print(f"The video scanned is {average_score}% unsafe. Time: {current_time}")
+    print_message = f"The video scanned in channel: {channel_name} is {formatted_num}% unsafe. Time: {current_time}"
 
-    if average_score > 65:
+    if average_score > 30:
+        print(colored(print_message, 'red'))
         is_nsfw = True
+    else:
+        print(print_message)
+        is_nsfw = False
 
     os.remove(file_path)
 
@@ -166,6 +182,7 @@ def get_yoda_speak(sentence):
     url = yoda_api + sentence
     result = get_json_data(url)
     text = result["yodish"]
+    text = "Yoda: " + text
     return text
 
 
@@ -179,3 +196,4 @@ def get_joke():
     joke_json = get_json_data(joke_api)
     joke = Joke(joke_json["setup"], joke_json["punchline"])
     return joke
+

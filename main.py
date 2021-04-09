@@ -71,6 +71,20 @@ async def on_message(message):
         sentence = message.content.replace("-!yoda ", "")
         yoda_sentence = commands.get_yoda_speak(sentence)
         await message.channel.send(yoda_sentence)
+        time.sleep(1)
+        await message.delete()
+
+    # elif message.content.startswith("-!mute"):
+    #     person = message.content.replace("-!mute ", "")
+    #     commands.muted_people.append(person)
+    #     await message.delete()
+    #     await message.channel.send(f"{person} has been muted successfully")
+    #
+    # elif message.content.startswith("-!unmute"):
+    #     person = message.content.replace("-!unmute ", "")
+    #     commands.muted_people.remove(person)
+    #     await message.delete()
+    #     await message.channel.send(f"{person} has been un-muted successfully")
 
     elif message.content.startswith("-!joke"):
         joke = commands.get_joke()
@@ -85,7 +99,7 @@ async def on_message(message):
     if message.content.__contains__(".gif") \
             or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
 
-        is_NSFW = commands.check_nsfw_image(message.content)
+        is_NSFW = commands.check_nsfw_image(message.content, message.channel.name)
 
         if is_NSFW:
             await message.channel.send(messages.nsfw_content_message(message.author.display_name))
@@ -94,7 +108,7 @@ async def on_message(message):
     if message.content.__contains__(".mov") \
             or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
 
-        is_NSFW = commands.check_nsfw_video(message.content)
+        is_NSFW = commands.check_nsfw_video(message.content, message.channel.name)
 
         if is_NSFW:
             await message.channel.send(messages.nsfw_content_message(message.author.display_name))
@@ -105,7 +119,7 @@ async def on_message(message):
             if attachment.url.__contains__(".jpg") \
                     or attachment.url.__contains__(".png") or attachment.url.__contains__(".gif"):
 
-                is_NSFW = commands.check_nsfw_image(attachment.url)
+                is_NSFW = commands.check_nsfw_image(attachment.url, message.channel.name)
 
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
@@ -114,7 +128,7 @@ async def on_message(message):
             if attachment.url.__contains__(".mov") \
                     or attachment.url.__contains__(".mp4") or attachment.url.__contains__(".avi"):
 
-                is_NSFW = commands.check_nsfw_video(attachment.url)
+                is_NSFW = commands.check_nsfw_video(attachment.url, message.channel.name)
 
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
@@ -126,17 +140,22 @@ async def on_message(message):
     if message.embeds:
         for embed in message.embeds:
             if embed.image:
-                is_NSFW = commands.check_nsfw_image(embed.image.url)
+
+                is_NSFW = commands.check_nsfw_image(embed.image.url, message.channel.name)
 
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
 
             if embed.video:
-                is_NSFW = commands.check_nsfw_video(embed.video.url)
+
+                is_NSFW = commands.check_nsfw_video(embed.video.url, message.channel.name)
 
                 if is_NSFW:
                     await message.channel.send(messages.nsfw_content_message(message.author.display_name))
                     await message.delete()
+
+    if message.author.display_name in commands.muted_people:
+        await message.delete()
 
 client.run(constants.discord_token)
