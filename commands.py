@@ -16,6 +16,7 @@ dog_facts_api = "https://dog-facts-api.herokuapp.com/api/v1/resources/dogs?numbe
 trivia_api = "https://opentdb.com/api.php?amount=1&category=9&difficulty=easy&type=boolean&encode=base64"
 yoda_api = "http://yoda-api.appspot.com/api/v1/yodish?text="
 joke_api = "https://official-joke-api.appspot.com/random_joke"
+nasa_image_search_api = "https://images-api.nasa.gov/search?"
 
 
 def get_json_data(url):
@@ -196,4 +197,15 @@ def get_joke():
     joke_json = get_json_data(joke_api)
     joke = Joke(joke_json["setup"], joke_json["punchline"])
     return joke
+
+
+def get_nasa_image_url(search):
+    url = nasa_image_search_api + f"q={search}&media_type=image"
+    json_object = get_json_data(url)
+    collection = json_object["collection"]
+    items = collection["items"]
+    item = items[0]
+    link = item["links"][0]
+    url = link["href"]
+    return url
 

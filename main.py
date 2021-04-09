@@ -92,8 +92,21 @@ async def on_message(message):
         time.sleep(2)
         await message.channel.send(joke.punchline)
 
+    elif message.content.startswith("-!nasa"):
+        search = message.content.replace("-!nasa ", "")
+
+        if search == "-!nasa":
+            await message.channel.send("SMH, You need to specify what images you want. 🤦  -!nasa {search}")
+            return
+
+        image_url = commands.get_nasa_image_url(search)
+
+        await message.channel.send(image_url)
+
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
+
+
 
     # All these are checking for NSFW content
     if message.content.__contains__(".gif") \

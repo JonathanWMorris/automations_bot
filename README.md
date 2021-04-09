@@ -24,6 +24,9 @@ Converts the sentence into yoda speak. Ex. I am speaking!, speaking,I am!
 ### -!joke
 Sends a joke with a setup and punchline
 
+### -!nasa {search}
+gives you an image from nasa for your search result
+
 ### -!verifyAll
 Verifies if all the members in that channel are seniors by checking in the official roster, if they are potentially not seniors, it will send a message that "{name} is not a senior".
 
