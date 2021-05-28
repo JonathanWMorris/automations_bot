@@ -106,69 +106,68 @@ async def on_message(message):
     elif message.content.startswith("-!"):
         await message.channel.send(messages.response_text)
 
-
-
     # All these are checking for NSFW content
-    if message.content.__contains__(".gif") \
-            or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
-
-        is_NSFW = commands.check_nsfw_image(message.content, message.channel.name)
-
-        if is_NSFW:
-            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-            await message.delete()
-
-    if message.content.__contains__(".mov") \
-            or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
-
-        is_NSFW = commands.check_nsfw_video(message.content, message.channel.name)
-
-        if is_NSFW:
-            await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-            await message.delete()
-
-    if message.attachments:
-        for attachment in message.attachments:
-            if attachment.url.__contains__(".jpg") \
-                    or attachment.url.__contains__(".png") or attachment.url.__contains__(".gif"):
-
-                is_NSFW = commands.check_nsfw_image(attachment.url, message.channel.name)
-
-                if is_NSFW:
-                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-                    await message.delete()
-
-            if attachment.url.__contains__(".mov") \
-                    or attachment.url.__contains__(".mp4") or attachment.url.__contains__(".avi"):
-
-                is_NSFW = commands.check_nsfw_video(attachment.url, message.channel.name)
-
-                if is_NSFW:
-                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-                    await message.delete()
-
-    if message.content.__contains__("827972357368053830"):
-        await message.channel.send(messages.mention_message)
-
-    if message.embeds:
-        for embed in message.embeds:
-            if embed.image:
-
-                is_NSFW = commands.check_nsfw_image(embed.image.url, message.channel.name)
-
-                if is_NSFW:
-                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-                    await message.delete()
-
-            if embed.video:
-
-                is_NSFW = commands.check_nsfw_video(embed.video.url, message.channel.name)
-
-                if is_NSFW:
-                    await message.channel.send(messages.nsfw_content_message(message.author.display_name))
-                    await message.delete()
+    # if message.content.__contains__(".gif") \
+    #         or message.content.__contains__(".jpg") or message.content.__contains__(".png"):
+    #
+    #     is_NSFW = commands.check_nsfw_image(message.content, message.channel.name)
+    #
+    #     if is_NSFW:
+    #         await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #         await message.delete()
+    #
+    # if message.content.__contains__(".mov") \
+    #         or message.content.__contains__(".mp4") or message.content.__contains__(".avi"):
+    #
+    #     is_NSFW = commands.check_nsfw_video(message.content, message.channel.name)
+    #
+    #     if is_NSFW:
+    #         await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #         await message.delete()
+    #
+    # if message.attachments:
+    #     for attachment in message.attachments:
+    #         if attachment.url.__contains__(".jpg") \
+    #                 or attachment.url.__contains__(".png") or attachment.url.__contains__(".gif"):
+    #
+    #             is_NSFW = commands.check_nsfw_image(attachment.url, message.channel.name)
+    #
+    #             if is_NSFW:
+    #                 await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #                 await message.delete()
+    #
+    #         if attachment.url.__contains__(".mov") \
+    #                 or attachment.url.__contains__(".mp4") or attachment.url.__contains__(".avi"):
+    #
+    #             is_NSFW = commands.check_nsfw_video(attachment.url, message.channel.name)
+    #
+    #             if is_NSFW:
+    #                 await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #                 await message.delete()
+    #
+    # if message.content.__contains__("827972357368053830"):
+    #     await message.channel.send(messages.mention_message)
+    #
+    # if message.embeds:
+    #     for embed in message.embeds:
+    #         if embed.image:
+    #
+    #             is_NSFW = commands.check_nsfw_image(embed.image.url, message.channel.name)
+    #
+    #             if is_NSFW:
+    #                 await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #                 await message.delete()
+    #
+    #         if embed.video:
+    #
+    #             is_NSFW = commands.check_nsfw_video(embed.video.url, message.channel.name)
+    #
+    #             if is_NSFW:
+    #                 await message.channel.send(messages.nsfw_content_message(message.author.display_name))
+    #                 await message.delete()
 
     if message.author.display_name in commands.muted_people:
         await message.delete()
+
 
 client.run(constants.discord_token)

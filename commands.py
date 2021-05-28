@@ -2,7 +2,7 @@ import requests
 import base64
 import random
 import json
-from nudenet import NudeClassifier
+# from nudenet import NudeClassifier
 import os
 from datetime import datetime
 from termcolor import colored
@@ -106,71 +106,71 @@ def get_batch_verification(list_of_names):
     return responses
 
 
-def check_nsfw_image(url, channel_name):
-    file_path = "nsfw_video.gif"
+# def check_nsfw_image(url, channel_name):
+#     file_path = "nsfw_video.gif"
+#
+#     get_content(url, file_path)
+#
+#     result = nsfw_classifier.classify(file_path)
+#     is_nsfw = False
+#     image_results = result[file_path]
+#     unsafe_percent = image_results["unsafe"] * 100
+#
+#     now = datetime.now()
+#     current_time = now.strftime("%H:%M:%S")
+#
+#     num = unsafe_percent
+#     formatted_num = '{0:.3g}'.format(num)
+#
+#     print_message = f"The image scanned in {channel_name} channel is {formatted_num}% unsafe. Time: {current_time}"
+#
+#     if unsafe_percent > 30:
+#         print(colored(print_message, 'red'))
+#         is_nsfw = True
+#     else:
+#         print(print_message)
+#         is_nsfw = False
+#
+#     os.remove(file_path)
+#
+#     return is_nsfw
 
-    get_content(url, file_path)
 
-    result = nsfw_classifier.classify(file_path)
-    is_nsfw = False
-    image_results = result[file_path]
-    unsafe_percent = image_results["unsafe"] * 100
-
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-
-    num = unsafe_percent
-    formatted_num = '{0:.3g}'.format(num)
-
-    print_message = f"The image scanned in {channel_name} channel is {formatted_num}% unsafe. Time: {current_time}"
-
-    if unsafe_percent > 30:
-        print(colored(print_message, 'red'))
-        is_nsfw = True
-    else:
-        print(print_message)
-        is_nsfw = False
-
-    os.remove(file_path)
-
-    return is_nsfw
-
-
-def check_nsfw_video(url, channel_name):
-    file_path = "nsfw_video.mp4"
-
-    get_content(url, file_path)
-
-    result = nsfw_classifier.classify_video(file_path)
-    is_nsfw = False
-    video_result = result["preds"]
-
-    total_score = 0
-
-    for frame in video_result:
-        scores = video_result[frame]
-        total_score += scores["unsafe"]
-
-    average_score = total_score / len(video_result)
-
-    num = average_score
-    formatted_num = '{0:.3g}'.format(num)
-
-    now = datetime.now()
-    current_time = now.strftime("%H:%M:%S")
-
-    print_message = f"The video scanned in channel: {channel_name} is {formatted_num}% unsafe. Time: {current_time}"
-
-    if average_score > 30:
-        print(colored(print_message, 'red'))
-        is_nsfw = True
-    else:
-        print(print_message)
-        is_nsfw = False
-
-    os.remove(file_path)
-
-    return is_nsfw
+# def check_nsfw_video(url, channel_name):
+#     file_path = "nsfw_video.mp4"
+#
+#     get_content(url, file_path)
+#
+#     result = nsfw_classifier.classify_video(file_path)
+#     is_nsfw = False
+#     video_result = result["preds"]
+#
+#     total_score = 0
+#
+#     for frame in video_result:
+#         scores = video_result[frame]
+#         total_score += scores["unsafe"]
+#
+#     average_score = total_score / len(video_result)
+#
+#     num = average_score
+#     formatted_num = '{0:.3g}'.format(num)
+#
+#     now = datetime.now()
+#     current_time = now.strftime("%H:%M:%S")
+#
+#     print_message = f"The video scanned in channel: {channel_name} is {formatted_num}% unsafe. Time: {current_time}"
+#
+#     if average_score > 30:
+#         print(colored(print_message, 'red'))
+#         is_nsfw = True
+#     else:
+#         print(print_message)
+#         is_nsfw = False
+#
+#     os.remove(file_path)
+#
+#     return is_nsfw
 
 
 def get_content(url, file_path):
