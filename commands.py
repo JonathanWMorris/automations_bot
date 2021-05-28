@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 from termcolor import colored
 
-nsfw_classifier = NudeClassifier()
+#nsfw_classifier = NudeClassifier()
 animals = ["cat", "dog", "wolf", "otter", "panda"]
 muted_people = []
 
